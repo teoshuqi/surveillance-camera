@@ -1,28 +1,25 @@
-import cv2
 import numpy as np
+from skimage import exposure
+from skimage.color import rgb2gray
+from skimage import filters
+from skimage.morphology import ball, erosion, dilation
+from skimage.metrics import structural_similarity as ssim
 
+class Image:
+    def __init__(self, img):
+        self.img = img
 
-def clean_bgr2gray(img):
-    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    def denoise(self):
+        self.img = filters.gaussian(self.img, sigma=10, truncate=1/5)
+    
+    def clean_white_noise(self):
+        self.img = erosion(self.img, ball(5))
+        self.img = dilation(self.img, ball(5))
 
-    # Remove noise from image
-    smooth_img = cv2.GaussianBlur(gray_img,(5,5),0)
+    def format_contrast(self):
+        self.img = exposure.equalize_hist(self.img)
+    
 
-    # Apply Erode and Dilate operation
-    kernel = np.ones((3, 3), np.uint8)
-    eroded_img = cv2.erode(smooth_img, kernel)
-    cleaned_img = cv2.dilate(eroded_img, kernel)
-
-    return smooth_img
-
-def contrast(img):
-    eq_img = cv2.equalizeHist(img)
-    return eq_img
-
-def transform(img):
-    contrast_img = contrast(img)
-    clean_img = clean_bgr2gray(contrast_img)
-    return clean_img
 
 def subtraction(img1, img2):
     image_subtraction = (img1 - img2) % 256
