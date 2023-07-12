@@ -6,7 +6,7 @@ install:
 # 	python -m pytest -vv test_main.py
 
 format:
-	black *.py
+	black *.py && isort --profile black . 
 
 run:
 	python main.py
