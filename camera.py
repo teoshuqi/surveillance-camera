@@ -49,13 +49,14 @@ class Camera:
         cv2.destroyAllWindows()
 
     def start_record_mp4(self, name="video.mp4"):
-        fourcc = cv2.VideoWriter_fourcc(*type)
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         self.__record_file = cv2.VideoWriter(
             name, fourcc, self.__fps, self.__frame_size
         )
 
     def end_record_mp4(self):
         self.__record_file.release()
+        self.__record_file = None
 
     def read_frame(self, saving=False):
         ret, frame = self.cap.read()
