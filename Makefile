@@ -18,6 +18,6 @@ run:
 # 	sudo killall uvicorn
 
 lint:
-	pylint --disable=R,C main.py
+	ruff check .
 
 all: install lint
