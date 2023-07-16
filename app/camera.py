@@ -2,11 +2,10 @@ import os
 from typing import Tuple
 
 import cv2
+import image
 from dotenv import load_dotenv
 
-import scripts.image as image
-
-load_dotenv(".env")
+load_dotenv()
 # video
 CODEC = os.getenv("CODEC")
 VID_FORMAT = os.getenv("VID_FORMAT")
@@ -89,9 +88,7 @@ class Camera:
         self.__fps = fps  # update camera settings
         return self.__fps
 
-    def start(self,
-              fps: int = FPS,
-              frame_size: tuple = (WIDTH, HEIGHT)) -> None:
+    def start(self, fps: int = FPS, frame_size: tuple = (WIDTH, HEIGHT)) -> None:
         """
         Start the camera.
 
@@ -161,7 +158,7 @@ class Camera:
 
         fourcc = cv2.VideoWriter_fourcc(*CODEC)
         filename = f"{name}.{VID_FORMAT}"
-        print('start recording', filename)
+        print("start recording", filename)
         self.__record_file = cv2.VideoWriter(filename, fourcc, cam_fps, cam_size, True)
 
     def end_record_video(self) -> None:

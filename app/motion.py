@@ -1,7 +1,6 @@
 import cv2
+import image
 import numpy as np
-
-import scripts.image as image
 
 
 class Detector:

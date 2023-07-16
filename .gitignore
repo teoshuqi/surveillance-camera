@@ -5,6 +5,6 @@ __pycache__/
 
 .DS_Store
 
-motion_captures/*
+videos/*
 
 .ruff_cache/

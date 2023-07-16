@@ -3,15 +3,14 @@ import time
 from datetime import datetime
 from typing import Dict
 
+import camera
 import cv2
+import image
+import motion
 import numpy as np
 from dotenv import load_dotenv
 
-import scripts.camera as camera
-import scripts.image as image
-import scripts.motion as motion
-
-load_dotenv(".env")
+load_dotenv()
 # video
 IMG_DIR = os.getenv("VID_DIR")
 TIME_FORMAT = os.getenv("TIME_FORMAT")
@@ -33,9 +32,7 @@ class Streaming:
     and a Motion Detector object to detect motion by comparing every 10 frames.
     """
 
-    def __init__(self,
-                 camera: camera.Camera,
-                 detector: motion.Detector) -> None:
+    def __init__(self, camera: camera.Camera, detector: motion.Detector) -> None:
         """Initialize the VideoStreaming object.
 
         Args:
@@ -71,7 +68,9 @@ class Streaming:
             # to detect motion
             if params["frameno"] % N_FRAMES == 0:
                 img = image.Image(params["frame"])
-                is_moving, score = self.__detector.detect_motion(prev_img, img, SIM_THRESHOLD)
+                is_moving, score = self.__detector.detect_motion(
+                    prev_img, img, SIM_THRESHOLD
+                )
                 params["is_moving"], params["idle_score"] = is_moving, score
 
             # Determine if status of motion (starting, ending, no change)
@@ -155,7 +154,7 @@ class Streaming:
         """
         ret, buffer = cv2.imencode(".jpg", frame)
         if not ret:
-            print('Something is wrong with the frames or camera')
+            print("Something is wrong with the frames or camera")
             return
 
         frame_bytes = buffer.tobytes()

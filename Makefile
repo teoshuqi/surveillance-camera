@@ -1,23 +1,26 @@
 install:
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
-
-# test:
-# 	python -m pytest -vv test_main.py
+lint:
+	ruff check app/*.py
 
 format:
-	black *.py && isort --profile black . 
+	isort --profile black app/*.py  && black app/*.py
 
 run:
-	python main.py
+	python app/main.py
 
-# run-uvicorn:
-# 	uvicorn main:app --reload
+dstart:
+	docker start
 
-# killweb:
-# 	sudo killall uvicorn
+build:
+	docker compose build
 
-lint:
-	ruff check .
+up:
+	docker compose up
 
-all: install lint
+down:
+	docker compose down
+
+all: 
+	install lint format run
