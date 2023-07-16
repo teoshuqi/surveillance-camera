@@ -8,20 +8,13 @@ import scripts.image as image
 
 load_dotenv(".env")
 # video
-IMG_DIR = os.getenv("VID_DIR")
-TIME_FORMAT = os.getenv("TIME_FORMAT")
-STREAM_TIME_MINS = os.getenv("STREAM_TIME_MINS")
 CODEC = os.getenv("CODEC")
 VID_FORMAT = os.getenv("VID_FORMAT")
 
 # camera
-FPS = os.getenv("FPS")
-WIDTH = os.getenv("WIDTH")
-HEIGHT = os.getenv("HEIGHT")
-
-# motion detector
-N_FRAMES = os.getenv("N_FRAMES")
-SIM_THRESHOLD = float(os.getenv("THRESHOLD"))
+FPS = int(os.getenv("FPS"))
+WIDTH = int(os.getenv("WIDTH"))
+HEIGHT = int(os.getenv("HEIGHT"))
 
 
 class Camera:
@@ -57,7 +50,7 @@ class Camera:
         """
         self.__cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
         self.__cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
-        self.__frame_size = (height, width)
+        self.__frame_size = (width, height)
 
     def __set_fps(self, fps: int) -> None:
         """
@@ -96,7 +89,9 @@ class Camera:
         self.__fps = fps  # update camera settings
         return self.__fps
 
-    def start(self, fps: int = FPS, frame_size: tuple = (WIDTH, HEIGHT)) -> None:
+    def start(self,
+              fps: int = FPS,
+              frame_size: tuple = (WIDTH, HEIGHT)) -> None:
         """
         Start the camera.
 
@@ -166,6 +161,7 @@ class Camera:
 
         fourcc = cv2.VideoWriter_fourcc(*CODEC)
         filename = f"{name}.{VID_FORMAT}"
+        print('start recording', filename)
         self.__record_file = cv2.VideoWriter(filename, fourcc, cam_fps, cam_size, True)
 
     def end_record_video(self) -> None:
