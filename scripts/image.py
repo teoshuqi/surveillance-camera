@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import cv2
 import numpy as np
 
@@ -14,6 +15,7 @@ class Image:
     Attributes:
         __img: The image in ndarray
     """
+
     def __init__(self, img: np.ndarray) -> None:
         self.__img = img
 
