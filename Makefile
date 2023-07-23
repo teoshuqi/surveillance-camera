@@ -1,3 +1,7 @@
+setup:
+	python3.8 -m venv .venv
+	source .venv/bin/activate
+
 install:
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
@@ -9,18 +13,6 @@ format:
 
 run:
 	python app/main.py
-
-dstart:
-	docker start
-
-build:
-	docker compose build
-
-up:
-	docker compose up
-
-down:
-	docker compose down
 
 all: 
 	install lint format run
