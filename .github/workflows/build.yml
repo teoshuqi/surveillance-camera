@@ -1,0 +1,35 @@
+name: Build Surveillance Camera App
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.6", "3.7","3.8"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Setup Environment
+      run: |
+        make setup
+    - name: Install dependencies
+      run: |
+        make install
+    - name: Analysing the code with ruff
+      run: |
+        make lint
+    - name: Format code with black and isort
+      run: |
+        make format
+    - name: Testing Python
+      run: |
+        make test    

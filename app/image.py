@@ -31,13 +31,13 @@ class Image:
         gray_img = Image(gray)
         return gray_img
 
-    def denoise(self, k: int = 10, s: int = 2) -> Image:
+    def denoise(self, k: int = 11, s: int = 3) -> Image:
         """
         Denoise the image using Gaussian blur.
 
         Args:
-            k (int, optional): The kernel size. Defaults to 10.
-            s (int, optional): The sigma value. Defaults to 2.
+            k (int, optional): The kernel size. Defaults to 11.
+            s (int, optional): The sigma value. Defaults to 3.
 
         Returns:
             The denoised image.

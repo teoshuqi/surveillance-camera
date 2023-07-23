@@ -8,11 +8,17 @@ install:
 lint:
 	ruff check app/*.py
 
+test:
+	python -m pytest -vv --cov=app tests/
+
 format:
 	isort --profile black app/*.py  && black app/*.py
 
 run:
 	python app/main.py
 
-all: 
+test: 
+	install lint format test
+
+deploy:
 	install lint format run
