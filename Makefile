@@ -16,9 +16,3 @@ format:
 
 run:
 	python app/main.py
-
-test: 
-	install lint format test
-
-deploy:
-	install lint format run
