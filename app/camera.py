@@ -1,8 +1,7 @@
 import os
-from typing import Tuple
+from typing import Tuple, List
 
 import cv2
-import image
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -119,7 +118,7 @@ class Camera:
             print(f"Camera {self.__id} not opened")
         cv2.destroyAllWindows()
 
-    def read_frame(self, current_time: str = "") -> image.Image:
+    def read_frame(self, current_time: str = "") -> List[List]:
         """
         Read a frame from the camera and write current datetime on screen.
 
@@ -127,7 +126,7 @@ class Camera:
             current_time (str, optional): Current time in string format
 
         Returns:
-            The image frame.
+            The .
 
         """
         ret, frame = self.__cap.read()

@@ -1,6 +1,7 @@
 import cv2
-import image
+from app.image import Image
 import numpy as np
+from typing import Tuple
 
 
 class Detector:
@@ -12,7 +13,7 @@ class Detector:
     def __init__(self) -> None:
         pass
 
-    def __image_transform(self, img: image.Image) -> image.Image:
+    def __image_transform(self, img: Image) -> Image:
         """
         Transforms the image by reducinf sharpness and noise.
 
@@ -29,7 +30,7 @@ class Detector:
         clean_img = denoised_img.clean_white_noise(radius=1)
         return clean_img
 
-    def __image_subtraction(self, img1: image.Image, img2: image.Image) -> image.Image:
+    def __image_subtraction(self, img1: Image, img2: Image) -> Image:
         """
         Subtracts two images to get diffence of images.
 
@@ -42,10 +43,10 @@ class Detector:
         """
 
         subtraction = cv2.absdiff(img1.get_image(), img2.get_image())
-        subtracted_img = image.Image(subtraction)
+        subtracted_img = Image(subtraction)
         return subtracted_img
 
-    def __image_similarity(self, img1: image.Image, img2: image.Image) -> float:
+    def __image_similarity(self, img1: Image, img2: Image) -> float:
         """
         Calculates the similarity score between two images.
 
@@ -62,7 +63,7 @@ class Detector:
         img_similarity = round(100 - (np.mean(normalised_img) * 100), 2)
         return img_similarity
 
-    def detect_motion(self, prev_frame, current_frame, threshold) -> None:
+    def detect_motion(self, prev_frame, current_frame, threshold) -> Tuple[bool, float]:
         """
         Detect motion using previous and current camera frames
 
@@ -77,5 +78,5 @@ class Detector:
             transformed_prev_frame, transformed_current_frame
         )
 
-        has_movement = similarity_score < threshold
+        has_movement = bool(similarity_score < threshold)
         return has_movement, similarity_score

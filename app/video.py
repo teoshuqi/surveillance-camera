@@ -3,18 +3,18 @@ import time
 from datetime import datetime
 from typing import Dict
 
-import camera
+from app.camera import Camera
 import cv2
-import image
-import motion
+from app.image import Image
+from app.motion import Detector
 import numpy as np
 from dotenv import load_dotenv
 
 load_dotenv()
 # video
-IMG_DIR = os.getenv("VID_DIR")
+VID_DIR = os.getenv("VID_DIR")
 TIME_FORMAT = os.getenv("TIME_FORMAT")
-STREAM_TIME_MINS = int(os.getenv("STREAM_TIME_MINS"))
+STREAM_TIME_MINS = float(os.getenv("STREAM_TIME_MINS"))
 
 # camera
 FPS = int(os.getenv("FPS"))
@@ -32,7 +32,7 @@ class Streaming:
     and a Motion Detector object to detect motion by comparing every 10 frames.
     """
 
-    def __init__(self, camera: camera.Camera, detector: motion.Detector) -> None:
+    def __init__(self, camera: Camera, detector: Detector) -> None:
         """Initialize the VideoStreaming object.
 
         Args:
@@ -67,7 +67,7 @@ class Streaming:
             # Every n frames, compare current and previous frames
             # to detect motion
             if params["frameno"] % N_FRAMES == 0:
-                img = image.Image(params["frame"])
+                img = Image(params["frame"])
                 is_moving, score = self.__detector.detect_motion(
                     prev_img, img, SIM_THRESHOLD
                 )
@@ -88,14 +88,14 @@ class Streaming:
 
         self.__camera.end()
 
-    def __initialize_camera(self) -> image.Image:
+    def __initialize_camera(self) -> Image:
         """
         Initializes the camera with the desired frame rate and dimensions.
         """
         self.__camera.start(FPS, (WIDTH, HEIGHT))
         time.sleep(0.1)  # allow camera to turn on and stabilise
         first_frame = self.__camera.read_frame()
-        first_img = image.Image(first_frame)
+        first_img = Image(first_frame)
         return first_img
 
     def __process_motion(self, params: dict) -> Dict:
@@ -135,7 +135,7 @@ class Streaming:
             current_time_str (str): The current timestamp as a string.
         """
 
-        filename = f"{IMG_DIR}/{curr_time}"  # video format added using env
+        filename = f"{VID_DIR}/{curr_time}"  # video format added using env
         self.__camera.start_record_video(filename)
 
     def __end_motion_recording(self) -> None:
